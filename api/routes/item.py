@@ -9,7 +9,7 @@ router = APIRouter()
 
 
 @router.post('/boards/{board_id}/{column_id}')
-def add_item_in_column(item: ItemInput, board_id: str, column_id: str, current_user: str = Depends(get_user_from_token), db: Connection = Depends(get_db)):
+def add_item_in_column(item_input: ItemInput, board_id: str, column_id: str, current_user: str = Depends(get_user_from_token), db: Connection = Depends(get_db)):
     cursor = db.cursor()
     cursor.execute(
         """
@@ -40,20 +40,23 @@ def add_item_in_column(item: ItemInput, board_id: str, column_id: str, current_u
         (column_id,)
     )
     last_position = cursor.fetchone()
-    position = last_position[0] + 1
+    if last_position is None:
+        position = 0
+    else:
+        position = last_position[0] + 1
     cursor.execute(
         """
         INSERT INTO items (id, column_id, title, description, position, created_by)
         VALUES (?, ?, ?, ?, ?, ?);
         """,
-        (str(uuid4())[:10], column_id, item.title,
-         item.description, position, current_user)
+        (str(uuid4())[:10], column_id, item_input.title,
+         item_input.description, position, current_user)
     )
     db.commit()
     return {"message": "Item added successfully."}
 
 
-@router.delete('/boards/{item_id}')
+@router.delete('/item/{item_id}')
 def delete_item(item_id: str, current_user: str = Depends(get_user_from_token), db: Connection = Depends(get_db)):
     cursor = db.cursor()
     cursor.execute(

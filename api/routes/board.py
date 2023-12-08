@@ -3,12 +3,13 @@ from sqlite3 import Connection
 from uuid import uuid4
 from helper.auth_helper import get_user_from_token
 from helper.db_helper import get_db
+from models import BoardInput
 
 router = APIRouter()
 
 
-@router.post("/boards/{title}")
-def post_new_board(title: str, current_user: str = Depends(get_user_from_token), db: Connection = Depends(get_db)):
+@router.post("/boards")
+def post_new_board(board_input: BoardInput, current_user: str = Depends(get_user_from_token), db: Connection = Depends(get_db)):
     cursor = db.cursor()
     board_id = str(uuid4())[:10]
     # Add the board
@@ -17,7 +18,7 @@ def post_new_board(title: str, current_user: str = Depends(get_user_from_token),
         INSERT INTO boards (id, title, created_by)
         VALUES (?, ?, ?);
         """,
-        (board_id, title, current_user)
+        (board_id, board_input.title, current_user)
     )
     # Add the default columns
     cursor.execute(

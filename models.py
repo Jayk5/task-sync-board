@@ -33,3 +33,23 @@ class ItemInput(BaseModel):
         if len(v) < 1:
             raise ValueError("Must be at least 1 character.")
         return v
+
+
+class ColumnInput(BaseModel):
+    title: str
+
+    @validator("title")
+    def check_length(cls, v):
+        if len(v) < 1:
+            raise ValueError("Must be at least 1 character.")
+        return v
+
+
+class BoardInput(BaseModel):
+    title: str
+
+    @validator("title")
+    def check_length(cls, v):
+        if len(v) < 1:
+            raise ValueError("Must be at least 1 character.")
+        return v
