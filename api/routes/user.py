@@ -31,7 +31,6 @@ def register_user(user: UserInput, db: Connection = Depends(get_db)):
 @router.post("/token")
 def login_user(user: UserInput, db: Connection = Depends(get_db)):
     cursor = db.cursor()
-    print(user.username, user.password)
     cursor.execute(
         """
         SELECT id, password FROM users
@@ -63,7 +62,15 @@ def get_user(current_user: str = Depends(get_user_from_token), db: Connection = 
     cols = ["id", "username", "password"]
     if not user:
         raise HTTPException(status_code=404, detail="User not found.")
-    return {"details": dict(zip(cols, user))}
+    cursor.execute(
+        """
+        SELECT id, title FROM boards
+        WHERE created_by = ?;
+        """,
+        (current_user,)
+    )
+    boards = cursor.fetchall()
+    return {"details": dict(zip(cols, user)), "boards": boards}
 
 
 @router.get("/users")

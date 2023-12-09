@@ -6,7 +6,7 @@ DATABASE_URL = f"sqlite:///{DATABASE_NAME}"
 
 
 def init_and_get_db() -> Connection:
-    db = sqlite3.connect(DATABASE_NAME)
+    db = sqlite3.connect(DATABASE_NAME, check_same_thread=False)
     cursor = db.cursor()
 
     # TODO - find better alternative for this
