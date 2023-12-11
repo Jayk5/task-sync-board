@@ -40,3 +40,34 @@ def add_column_in_board(board_id: str, column_input: ColumnInput, current_user: 
     )
     db.commit()
     return {"message": "Column added successfully."}
+
+
+@router.delete("/boards/delcol/{column_id}")
+def delete_column(column_id: str, current_user: str = Depends(get_user_from_token), db: Connection = Depends(get_db)):
+    cursor = db.cursor()
+    cursor.execute(
+        """
+        SELECT id, title FROM columns
+        WHERE id = ?;
+        """,
+        (column_id,)
+    )
+    column = cursor.fetchone()
+    if not column:
+        raise HTTPException(status_code=404, detail="Column not found.")
+    cursor.execute(
+        """
+        DELETE FROM columns
+        WHERE id = ?;
+        """,
+        (column_id,)
+    )
+    cursor.execute(
+        """
+        DELETE FROM items
+        WHERE column_id = ?;
+        """,
+        (column_id,)
+    )
+    db.commit()
+    return {"message": "Column deleted successfully."}
