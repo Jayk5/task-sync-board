@@ -14,9 +14,9 @@ def add_item_in_column(item_input: ItemInput, board_id: str, column_id: str, cur
     cursor.execute(
         """
         SELECT id, title FROM boards
-        WHERE id = ? AND created_by = ?;
+        WHERE id = ?;
         """,
-        (board_id, current_user)
+        (board_id,)
     )
     board = cursor.fetchone()
     if not board:
@@ -69,9 +69,12 @@ def delete_item(item_id: str, current_user: str = Depends(get_user_from_token), 
     item = cursor.fetchone()
     if not item:
         raise HTTPException(status_code=404, detail="Item not found.")
-    if item[1] != current_user:
-        raise HTTPException(
-            status_code=401, detail="You are not authorized to delete this item.")
+
+    # Uncomment this if you want to restrict users from deleting other users' items.
+    # TODO: Add this feature in the frontend before uncommenting.
+    # if item[1] != current_user:
+    #     raise HTTPException(
+    #         status_code=401, detail="You are not authorized to delete this item.")
     cursor.execute(
         """
         DELETE FROM items

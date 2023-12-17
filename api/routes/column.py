@@ -14,9 +14,9 @@ def add_column_in_board(board_id: str, column_input: ColumnInput, current_user: 
     cursor.execute(
         """
         SELECT id, title FROM boards
-        WHERE id = ? AND created_by = ?;
+        WHERE id = ?;
         """,
-        (board_id, current_user)
+        (board_id,)
     )
     board = cursor.fetchone()
     if not board:

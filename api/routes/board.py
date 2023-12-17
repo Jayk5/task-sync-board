@@ -63,14 +63,14 @@ def get_boards(current_user: str = Depends(get_user_from_token), db: Connection 
 
 
 @router.get("/boards/{board_id}")
-def get_one_board(current_user: str = Depends(get_user_from_token), board_id: str = None, db: Connection = Depends(get_db)):
+def get_one_board(board_id: str = None, db: Connection = Depends(get_db)):
     cursor = db.cursor()
     cursor.execute(
         """
         SELECT id, title FROM boards
-        WHERE id = ? AND created_by = ?;
+        WHERE id = ?;
         """,
-        (board_id, current_user)
+        (board_id,)
     )
     board = cursor.fetchone()
     if not board:
@@ -90,13 +90,13 @@ def get_one_board(current_user: str = Depends(get_user_from_token), board_id: st
     for column in columns:
         cursor.execute(
             """
-            SELECT id, title, description, position FROM items
+            SELECT id, title, description, position, created_by FROM items
             WHERE column_id = ?
             ORDER BY position;
             """,
             (column["id"],)
         )
         items = cursor.fetchall()
-        cols = ["id", "title", "description", "position"]
+        cols = ["id", "title", "description", "position", "created_by"]
         column["items"] = [dict(zip(cols, item)) for item in items]
     return {"board": dict(zip(cols, board)), "columns": columns}
