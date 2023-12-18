@@ -62,7 +62,22 @@ export default function Board() {
   }
 
   useEffect(() => {
-    fetchData();
+    const socket = new WebSocket(`ws://localhost:8000/ws/boards/${id}`);
+    console.log(socket);
+    socket.addEventListener('open', function (event) {
+      console.log('Connected to WS Server');
+      fetchData();
+    });
+    socket.addEventListener('message', function (event) {
+      const data = JSON.parse(event.data);
+      console.log(data);
+      if (data.type === 'update') {
+        fetchData();
+      }
+    });
+    socket.addEventListener('close', function (event) {
+      console.log('Disconnected from WS Server');
+    });
   }, []);
 
   const renderTable = (board) => {
@@ -102,7 +117,7 @@ export default function Board() {
             description: '',
           }
         }));
-        fetchData();
+        // fetchData();
       })
       .catch((error) => {
         console.log(error);
@@ -129,7 +144,7 @@ export default function Board() {
       },
     })
       .then((response) => {
-        fetchData();
+        // fetchData();
       })
       .catch((error) => {
         console.log(error);
@@ -157,7 +172,7 @@ export default function Board() {
         setNewColumn({
           title: '',
         });
-        fetchData();
+        // fetchData();
       })
       .catch((error) => {
         console.log(error);
@@ -172,7 +187,7 @@ export default function Board() {
       },
     })
       .then((response) => {
-        fetchData();
+        // fetchData();
       })
       .catch((error) => {
         console.log(error);

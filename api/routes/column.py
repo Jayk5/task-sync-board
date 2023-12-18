@@ -4,12 +4,13 @@ from uuid import uuid4
 from helper.auth_helper import get_user_from_token
 from helper.db_helper import get_db
 from models import ColumnInput
+from api.routes.sockets import broadcast_to_board_clients
 
 router = APIRouter()
 
 
 @router.post("/boards/addcol/{board_id}")
-def add_column_in_board(board_id: str, column_input: ColumnInput, current_user: str = Depends(get_user_from_token), db: Connection = Depends(get_db)):
+async def add_column_in_board(board_id: str, column_input: ColumnInput, current_user: str = Depends(get_user_from_token), db: Connection = Depends(get_db)):
     cursor = db.cursor()
     cursor.execute(
         """
@@ -39,20 +40,23 @@ def add_column_in_board(board_id: str, column_input: ColumnInput, current_user: 
         (str(uuid4())[:10], board_id, column_input.title, position)
     )
     db.commit()
+    message = {"type": "update", "board_id": board_id}
+    await broadcast_to_board_clients(board_id, message)
     return {"message": "Column added successfully."}
 
 
 @router.delete("/boards/delcol/{column_id}")
-def delete_column(column_id: str, current_user: str = Depends(get_user_from_token), db: Connection = Depends(get_db)):
+async def delete_column(column_id: str, current_user: str = Depends(get_user_from_token), db: Connection = Depends(get_db)):
     cursor = db.cursor()
     cursor.execute(
         """
-        SELECT id, title FROM columns
+        SELECT id, title, board_id FROM columns
         WHERE id = ?;
         """,
         (column_id,)
     )
     column = cursor.fetchone()
+    board_id = column[2]
     if not column:
         raise HTTPException(status_code=404, detail="Column not found.")
     cursor.execute(
@@ -70,4 +74,6 @@ def delete_column(column_id: str, current_user: str = Depends(get_user_from_toke
         (column_id,)
     )
     db.commit()
+    message = {"type": "update", "board_id": board_id}
+    await broadcast_to_board_clients(board_id, message)
     return {"message": "Column deleted successfully."}

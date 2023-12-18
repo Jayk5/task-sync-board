@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from api.routes import user, board, column, item
+from api.routes import user, board, column, item, sockets
 
 app = FastAPI()
 origins = ["*"]
@@ -11,3 +11,4 @@ app.include_router(user.router, tags=["User"])
 app.include_router(board.router, tags=["Board"])
 app.include_router(column.router, tags=["Column"])
 app.include_router(item.router, tags=["Item"])
+app.include_router(sockets.router, tags=["Sockets"])
