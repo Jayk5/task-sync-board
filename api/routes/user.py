@@ -48,6 +48,11 @@ def login_user(user: UserInput, db: Connection = Depends(get_db)):
             status_code=401, detail="Incorrect username or password.")
 
 
+@router.post("/validate")
+def validate_user_from_token(current_user: str = Depends(get_user_from_token)):
+    return {"message": "User is valid."}
+
+
 @router.get("/users/me")
 def get_user(current_user: str = Depends(get_user_from_token), db: Connection = Depends(get_db)):
     cursor = db.cursor()

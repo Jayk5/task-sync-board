@@ -17,7 +17,12 @@ export default function User() {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        });
+        })
+          .catch((error) => {
+            console.log(error);
+            localStorage.removeItem("token");
+            navigate("/login");
+          });
         setResponse(response.data);
         setBoardlist(response.data.boards);
       } else {

@@ -41,47 +41,50 @@ export default function Login() {
 
   return (
     <>
-      <form>
-        <div>
-          <h3>Sign In</h3>
+      {isLogged ? <div>You are already logged in</div> :
+        <form>
           <div>
-            <label>Username</label>
-            <input
-              type="username"
-              name="username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              className="form-control"
-              placeholder="Enter username"
-            />
+            <h3>Sign In</h3>
+            <div>
+              <label>Username</label>
+              <input
+                type="username"
+                name="username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                className="form-control"
+                placeholder="Enter username"
+              />
+            </div>
+            <div>
+              <label>Password</label>
+              <input
+                type="password"
+                name="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="form-control"
+                placeholder="Enter password"
+              />
+            </div>
+            {error ? <div>{errorMsg}</div> : ""}
+            <div>
+              <button
+                type="submit"
+                onClick={(e) => {
+                  handleSubmit(e);
+                }}
+              >
+                Sign In
+              </button>
+            </div>
+            <p>
+              New Here? <a href="/register">Sign up</a>
+            </p>
           </div>
-          <div>
-            <label>Password</label>
-            <input
-              type="password"
-              name="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="form-control"
-              placeholder="Enter password"
-            />
-          </div>
-          {error ? <div>{errorMsg}</div> : ""}
-          <div>
-            <button
-              type="submit"
-              onClick={(e) => {
-                handleSubmit(e);
-              }}
-            >
-              Sign In
-            </button>
-          </div>
-          <p>
-            New Here? <a href="/register">Sign up</a>
-          </p>
-        </div>
-      </form>
+        </form>
+      }
     </>
+
   );
 }
