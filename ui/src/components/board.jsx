@@ -5,6 +5,7 @@ import UserContext from "../contexts/userContext";
 
 export default function Board() {
   const { isLogged, setIsLogged } = useContext(UserContext);
+  const [title, setTitle] = useState('');
   const [board, setBoard] = useState([]);
   const [heads, setHeads] = useState([]);
   const [item, setItem] = useState({});
@@ -18,6 +19,7 @@ export default function Board() {
     try {
       const serverResponse = await Axios.get(`http://localhost:8000/boards/${id}`);
       let cols = serverResponse.data.columns;
+      setTitle(serverResponse.data.board.title);
       let sizeOfBoard = cols.length;
       let maxSizeOfCol = 0;
       for (let i = 0; i < sizeOfBoard; i++) {
@@ -198,7 +200,7 @@ export default function Board() {
 
   return (
     <>
-      <h1>Board</h1>
+      <h1>Board - {title}</h1>
       <Link to='/user'>Back</Link>
       <br />
       <br />
