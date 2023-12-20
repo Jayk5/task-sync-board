@@ -7,6 +7,7 @@ export default function User() {
   const { isLogged, setIsLogged } = useContext(UserContext);
   const [response, setResponse] = useState({});
   const [boardlist, setBoardlist] = useState([]);
+  const [newBoardName, setNewBoardName] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -38,13 +39,40 @@ export default function User() {
     navigate("/login");
   };
 
+  const handleNewBoardNameChange = (event) => {
+    setNewBoardName(event.target.value);
+  };
+
+  const handleNewBoardAdd = () => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      Axios.post(
+        "http://localhost:8000/boards",
+        {
+          title: newBoardName,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+        .then((response) => {
+          navigate(`/boards/${response.data.id}`);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }
+
   return (
     <>
       <div>You are now logged in</div>
       <div>{response.details?.username}</div>
       <button onClick={logoutHandler}>Log Out</button>
-      <br></br>
-      <br></br>
+      <br />
+      <br />
       <div>Boards</div>
       <br></br>
       <div>
@@ -55,6 +83,18 @@ export default function User() {
           </div>
         ))}
       </div>
+      <br />
+      <br />
+      <div>Add New Board</div>
+      <input
+        type="text"
+        name="newBoard"
+        placeholder="New Board Name"
+        value={newBoardName}
+        onChange={handleNewBoardNameChange}
+      />
+      <br />
+      <button onClick={handleNewBoardAdd}>Add Board</button>
     </>
   );
 }
