@@ -88,18 +88,33 @@ export default function Board() {
       const row = board[i];
       const children = [];
       for (let j = 0; j < row.length; j++) {
-        children.push(<td key={j}>{
-          row[j] ? <>
-            <Link to={`/items/${row[j].id}`}>{row[j].title}</Link>
-            <br /> {row[j].description} <br />
-            {isLogged ? <button onClick={() => handleItemDelete(row[j].id)}>Delete</button> : ""}
-          </> : ""
-        }</td>);
+        children.push(
+          <td key={j} className="p-2 border border-blue-500 text-center rounded-md">
+            {row[j] ? (
+              <>
+                <Link to={`/items/${row[j].id}`} className="text-blue-500 font-semibold block">
+                  {row[j].title}
+                </Link>
+                <span className="block mb-2">{row[j].description}</span>
+                {isLogged && (
+                  <button
+                    onClick={() => handleItemDelete(row[j].id)}
+                    className="bg-red-400 text-white px-2 py-1 rounded-md hover:bg-red-600 focus:outline-none"
+                  >
+                    Delete
+                  </button>
+                )}
+              </>
+            ) : (
+              ""
+            )}
+          </td>
+        );
       }
       rows.push(<tr key={i}>{children}</tr>);
     }
     return rows;
-  }
+  };
 
   const handleItemAdd = (columnId) => {
     const { title, description } = item[columnId];
@@ -199,71 +214,96 @@ export default function Board() {
 
 
   return (
-    <>
-      <h1>Board - {title}</h1>
-      <Link to='/user'>Back</Link>
-      <br />
-      <br />
-      <br />
-      <table border={1}>
-        <thead>
-          <tr>
-            {heads.map((head) => (
-              <th key={head.id}>{head.title}</th>
-            ))}
-            {isLogged ?
-              <th>
-                <input
-                  type="text"
-                  name="title"
-                  placeholder="Enter title"
-                  value={newColumn.title}
-                  onChange={handleColumnAddChange}
-                />
-                <button onClick={handleColumnAdd}>Add Column</button>
-              </th> : ""}
-          </tr>
-        </thead>
-        <tbody>
-          {renderTable(board)}
-        </tbody>
-        {isLogged ?
-          <tfoot>
-            <tr>
-              {heads.map((head) => (
-                <>
-                  <th>
-                    <input
-                      type="text"
-                      name="title"
-                      placeholder="Enter title"
-                      value={item[head.id].title}
-                      onChange={(e) => { handleItemChange(e, head.id) }}
-                    />
-                    <br />
-                    <input
-                      type="text"
-                      name="description"
-                      placeholder="Enter description"
-                      value={item[head.id].description}
-                      onChange={(e) => { handleItemChange(e, head.id) }}
-                    />
-                    <br />
-                    <button onClick={() => { handleItemAdd(head.id) }}>Add Item</button>
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-400 to-orange-300 text-gray-800">
+      <div className="bg-white p-4 md:p-8 rounded-md shadow-md mb-4 mt-4 w-full md:w-3/4 lg:w-2/3 xl:w-4/5">
+        <h1 className="text-2xl md:text-3xl font-semibold mb-4">Board - {title}</h1>
+        <Link to='/user' className="text-blue-500 mb-2 block">Back</Link>
+
+        <div className="overflow-x-auto">
+          <table className="border-collapse border w-full">
+            <thead>
+              <tr>
+                {heads.map((head) => (
+                  <th key={head.id} className="p-2 border text-center bg-blue-500 text-white rounded-md shadow-md">
+                    {head.title}
                   </th>
-                </>
-              ))}
-            </tr>
-            <tr>
-              {heads.map((head) => (
-                <th>
-                  <button onClick={() => { handleColumnDelete(head.id) }}>Delete Column</button>
-                </th>
-              ))}
-            </tr>
-          </tfoot>
-          : ""}
-      </table>
-    </>
+                ))}
+                {isLogged && (
+                  <th className="p-2 border text-center rounded-md">
+                    <div className="mb-2">
+                      <input
+                        type="text"
+                        name="title"
+                        placeholder="Enter title"
+                        value={newColumn.title}
+                        onChange={handleColumnAddChange}
+                        className="p-1 border rounded-md focus:outline-none focus:border-blue-500 shadow-md w-full"
+                      />
+                    </div>
+                    <div>
+                      <button
+                        onClick={handleColumnAdd}
+                        className="bg-blue-500 text-white px-2 py-1 rounded-md hover:bg-blue-600 focus:outline-none shadow-md w-full"
+                      >
+                        Add Column
+                      </button>
+                    </div>
+                  </th>
+                )}
+              </tr>
+            </thead>
+            <tbody>
+              {renderTable(board)}
+            </tbody>
+            {isLogged && (
+              <tfoot>
+                <tr>
+                  {heads.map((head) => (
+                    <th key={head.id} className="p-2 border text-center rounded-md">
+                      <input
+                        type="text"
+                        name="title"
+                        placeholder="Enter title"
+                        value={item[head.id].title}
+                        onChange={(e) => { handleItemChange(e, head.id) }}
+                        className="p-1 border rounded-md focus:outline-none focus:border-blue-500 shadow-md w-full"
+                      />
+                      <br />
+                      <input
+                        type="text"
+                        name="description"
+                        placeholder="Enter description"
+                        value={item[head.id].description}
+                        onChange={(e) => { handleItemChange(e, head.id) }}
+                        className="p-1 border rounded-md focus:outline-none focus:border-blue-500 shadow-md w-full"
+                      />
+                      <br />
+                      <button
+                        onClick={() => { handleItemAdd(head.id) }}
+                        className="bg-blue-500 text-white px-2 py-1 rounded-md hover:bg-blue-600 focus:outline-none shadow-md w-full"
+                      >
+                        Add Item
+                      </button>
+                    </th>
+                  ))}
+                </tr>
+                <tr>
+                  {heads.map((head) => (
+                    <th key={head.id} className="p-2 border text-center rounded-md">
+                      <button
+                        onClick={() => { handleColumnDelete(head.id) }}
+                        className="bg-red-400 text-white px-2 py-1 rounded-md hover:bg-red-600 focus:outline-none shadow-md w-full"
+                      >
+                        Delete Column
+                      </button>
+                    </th>
+                  ))}
+                </tr>
+              </tfoot>
+            )}
+          </table>
+        </div>
+      </div>
+    </div>
   );
 }

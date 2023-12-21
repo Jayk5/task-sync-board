@@ -40,51 +40,59 @@ export default function Login() {
   };
 
   return (
-    <>
-      {isLogged ? <div>You are already logged in</div> :
-        <form>
-          <div>
-            <h3>Sign In</h3>
-            <div>
-              <label>Username</label>
-              <input
-                type="username"
-                name="username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                className="form-control"
-                placeholder="Enter username"
-              />
-            </div>
-            <div>
-              <label>Password</label>
-              <input
-                type="password"
-                name="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="form-control"
-                placeholder="Enter password"
-              />
-            </div>
-            {error ? <div>{errorMsg}</div> : ""}
-            <div>
-              <button
-                type="submit"
-                onClick={(e) => {
-                  handleSubmit(e);
-                }}
-              >
-                Sign In
-              </button>
-            </div>
-            <p>
-              New Here? <a href="/register">Sign up</a>
-            </p>
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-400 to-orange-300 text-gray-800">
+      {isLogged ? (
+        <div className="bg-green-500 text-white p-8 rounded-md">
+          You are already logged in
+        </div>
+      ) : (
+        <form className="bg-white p-8 shadow-md rounded-md w-96">
+          <h3 className="text-2xl font-semibold mb-6 text-gray-800">Sign In</h3>
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2">
+              Username
+            </label>
+            <input
+              type="text"
+              name="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
+              placeholder="Enter username"
+            />
           </div>
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2">
+              Password
+            </label>
+            <input
+              type="password"
+              name="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
+              placeholder="Enter password"
+            />
+          </div>
+          {error && (
+            <div className="text-red-500 mb-4">{errorMsg}</div>
+          )}
+          <div>
+            <button
+              type="submit"
+              onClick={(e) => {
+                handleSubmit(e);
+              }}
+              className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 focus:outline-none"
+            >
+              Sign In
+            </button>
+          </div>
+          <p className="text-gray-600 text-sm mt-4">
+            New Here? <a href="/register" className="text-blue-500">Sign up</a>
+          </p>
         </form>
-      }
-    </>
-
+      )}
+    </div>
   );
 }
