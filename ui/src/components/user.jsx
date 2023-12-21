@@ -36,7 +36,7 @@ export default function User() {
   const logoutHandler = () => {
     localStorage.removeItem("token");
     setIsLogged(false);
-    navigate("/login");
+    navigate("/");
   };
 
   const handleNewBoardNameChange = (event) => {

@@ -6,6 +6,7 @@ import Login from './components/login'
 import Register from './components/register'
 import User from './components/user'
 import Board from './components/board'
+import Home from './components/home'
 import UserContext from './contexts/userContext'
 
 function App() {
@@ -51,6 +52,7 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/user" element={<User />} />
             <Route path="/boards/:id" element={<Board />} />
+            <Route path="/" element={<Home />} />
           </Routes>
         </Router>
       </UserContext.Provider>
