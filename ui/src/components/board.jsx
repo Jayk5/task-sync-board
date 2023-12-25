@@ -92,7 +92,7 @@ export default function Board() {
           <td key={j} className="p-2 border border-blue-500 text-center rounded-md">
             {row[j] ? (
               <>
-                <Link to={`/items/${row[j].id}`} className="text-blue-500 font-semibold block">
+                <Link className="text-blue-500 font-semibold block">
                   {row[j].title}
                 </Link>
                 <span className="block mb-2">{row[j].description}</span>

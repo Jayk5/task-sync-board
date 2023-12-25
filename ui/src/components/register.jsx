@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import Axios from "axios";
 import UserContext from "../contexts/userContext";
 
@@ -89,7 +89,7 @@ export default function Register() {
             </button>
           </div>
           <p className="text-gray-600 text-sm mt-4">
-            Already registered? <a href="/login" className="text-blue-500">Log In</a>
+            Already registered? <Link to="/login" className="text-blue-500">Log In</Link>
           </p>
         </form>
       )}
