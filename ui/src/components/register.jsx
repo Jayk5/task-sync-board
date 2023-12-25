@@ -1,4 +1,5 @@
 import { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import Axios from "axios";
 import UserContext from "../contexts/userContext";
 
@@ -8,6 +9,7 @@ export default function Register() {
   const [error, setError] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const { isLogged, setIsLogged } = useContext(UserContext);
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
