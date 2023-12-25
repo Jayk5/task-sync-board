@@ -16,7 +16,7 @@ function App() {
   const validateToken = async () => {
     if (userToken) {
       try {
-        const response = await Axios.post('http://localhost:8000/validate', {}, {
+        const response = await Axios.post(`${import.meta.env.VITE_API_URL}/validate`, {}, {
           headers: {
             Authorization: `Bearer ${userToken}`
           }
