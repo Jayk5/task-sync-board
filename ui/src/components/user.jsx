@@ -14,7 +14,7 @@ export default function User() {
     async function fetchData() {
       const token = localStorage.getItem("token");
       if (token) {
-        const response = await Axios.get("http://localhost:8000/users/me", {
+        const response = await Axios.get(`${import.meta.env.VITE_API_URL}/users/me`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -47,7 +47,7 @@ export default function User() {
     const token = localStorage.getItem("token");
     if (token) {
       Axios.post(
-        "http://localhost:8000/boards",
+        `${import.meta.env.VITE_API_URL}/boards`,
         {
           title: newBoardName,
         },

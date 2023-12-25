@@ -17,7 +17,7 @@ export default function Board() {
 
   async function fetchData() {
     try {
-      const serverResponse = await Axios.get(`http://localhost:8000/boards/${id}`);
+      const serverResponse = await Axios.get(`${import.meta.env.VITE_API_URL}/boards/${id}`);
       let cols = serverResponse.data.columns;
       setTitle(serverResponse.data.board.title);
       let sizeOfBoard = cols.length;
@@ -64,7 +64,7 @@ export default function Board() {
   }
 
   useEffect(() => {
-    const socket = new WebSocket(`ws://localhost:8000/ws/boards/${id}`);
+    const socket = new WebSocket(`${import.meta.env.VITE_SOCKET_URL}/ws/boards/${id}`);
     console.log(socket);
     socket.addEventListener('open', function (event) {
       console.log('Connected to WS Server');
@@ -118,7 +118,7 @@ export default function Board() {
 
   const handleItemAdd = (columnId) => {
     const { title, description } = item[columnId];
-    Axios.post(`http://localhost:8000/boards/${id}/${columnId}`, {
+    Axios.post(`${import.meta.env.VITE_API_URL}/boards/${id}/${columnId}`, {
       title,
       description,
     }, {
@@ -155,7 +155,7 @@ export default function Board() {
   };
 
   const handleItemDelete = (itemId) => {
-    Axios.delete(`http://localhost:8000/item/${itemId}`, {
+    Axios.delete(`${import.meta.env.VITE_API_URL}/item/${itemId}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
@@ -178,7 +178,7 @@ export default function Board() {
   }
 
   const handleColumnAdd = () => {
-    Axios.post(`http://localhost:8000/boards/addcol/${id}`, {
+    Axios.post(`${import.meta.env.VITE_API_URL}/boards/addcol/${id}`, {
       title: newColumn.title
     }, {
       headers: {
@@ -198,7 +198,7 @@ export default function Board() {
   }
 
   const handleColumnDelete = (columnId) => {
-    Axios.delete(`http://localhost:8000/boards/delcol/${columnId}`, {
+    Axios.delete(`${import.meta.env.VITE_API_URL}/boards/delcol/${columnId}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
       },

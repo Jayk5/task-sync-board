@@ -18,7 +18,7 @@ export default function Register() {
       setErrorMsg("Password cannot be empty");
       setError(true);
     } else {
-      Axios.post("http://localhost:8000/register", {
+      Axios.post(`${import.meta.env.VITE_API_URL}/register`, {
         username,
         password,
       })

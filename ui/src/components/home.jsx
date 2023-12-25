@@ -40,7 +40,7 @@ export default function Home() {
           The frontend is built with ReactJS, and Tailwind CSS is used for styling, creating a modern and responsive user interface. The integration of WebSockets enables real-time collaboration, allowing users to see updates and changes instantly as they occur.
         </p>
         <a
-          href="https://github.com/your-username/your-repo"
+          href="https://github.com/Jayk5/task-sync-board"
           target="_blank"
           rel="noopener noreferrer"
           className="text-blue-500 hover:underline"

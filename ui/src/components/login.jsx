@@ -20,7 +20,7 @@ export default function Login() {
       setErrorMsg("Password cannot be empty");
       setError(true);
     } else {
-      Axios.post("http://localhost:8000/token", {
+      Axios.post(`${import.meta.env.VITE_API_URL}/token`, {
         username,
         password,
       })
