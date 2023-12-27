@@ -17,3 +17,7 @@ The frontend is built with ReactJS, and Tailwind CSS is used for styling, creati
 4. In ui folder, run `npm install` to install the dependencies.
 5. Create a `.env` file and copy contents of `.env_local` to `.env`.
 6. Run `npm run dev` in ui folder to start the fontend client.
+
+
+https://github.com/Jayk5/task-sync-board/assets/75439864/dc60d40d-e566-437e-9f2b-f5991f46d742
+
